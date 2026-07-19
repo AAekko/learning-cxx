@@ -3,7 +3,7 @@
 // READ: <https://stackoverflow.com/questions/156767/whats-the-difference-between-an-argument-and-a-parameter>
 // THINK: 参数都有哪些传递方式？如何选择传递方式？
 
-void func(int);  //为什么这里这题又声明成void类型呢，上一题又一定要声明成int类型？？
+void func(int);  //因为func这个函数没有需要返回的结果，所以声明成void类型，和上一题不一样。
 
 // TODO: 为下列 ASSERT 填写正确的值
 int main(int argc, char **argv) {

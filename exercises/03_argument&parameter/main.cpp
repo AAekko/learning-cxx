@@ -16,8 +16,9 @@ int main(int argc, char **argv) {
     return 0;
 }
 
+// 形参的核心作用是让函数接收不同的外部数据，从而提高函数的通用性和复用性。
 // TODO: 为下列 ASSERT 填写正确的值
-void func(int param) {
+void func(int param) {           
     ASSERT(param == 99, "param should be 99");
     std::cout << "befor add: " << param << std::endl;
     param += 1;

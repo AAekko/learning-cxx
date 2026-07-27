@@ -11,7 +11,8 @@ class DynFibonacci {
 
 public:
     // TODO: 实现动态设置容量的构造器
-    DynFibonacci(int capacity): cache(new size_t[capacity]), cached(2) {
+    DynFibonacci(int capacity): cache(new size_t[capacity]), cached(2),capacity(capacity) {
+        ASSERT(capacity >= 2, "capacity should be at least 2");
         cache[0]= 0;
         cache[1]= 1;
     }
@@ -21,7 +22,7 @@ public:
         : cache(new size_t[other.capacity]),
           cached(other.cached),
           capacity(other.capacity) {
-        for (int i = 0; i <= cached; ++i) {
+        for (int i = 0; i < cached; ++i) {
             cache[i] = other.cache[i];
         }
     }
@@ -34,7 +35,7 @@ public:
 
     // TODO: 实现正确的缓存优化斐波那契计算
     size_t get(int i) {
-        for (; cache <= i; ++cached) {
+        for (; cached <= i; ++cached) {
             cache[cached] = cache[cached - 1] + cache[cached - 2];
         }
         return cache[i];

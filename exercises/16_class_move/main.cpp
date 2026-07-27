@@ -22,17 +22,20 @@ public:
     }
 
     // TODO: 实现移动构造器.接管 other 的缓存
+    //DynFibonacci &&表示右值引用。other 就是即将被移动的原对象，这里对应 fib
     DynFibonacci(DynFibonacci &&other) noexcept
-        : cache(other.cache), cached(other.cached) {
-        other.cache = nullptr;
+        : cache(other.cache), cached(other.cached) {  // 让新对象也获得这个数组的地址。但是现在两个对象指向同一个数组，这是危险的。
+        other.cache = nullptr;  // 所以马上执行other.cache = nullptr;最终，新对象 fib_ 接管了数组，原对象 fib 不再拥有数组。这就是资源所有权的转移。
         other.cached = 0;
     }
 
 
     // TODO: 实现移动赋值
     // NOTICE: ⚠ 注意移动到自身问题 ⚠
+    // noexcept 表示这个函数承诺不会抛出异常。移动操作只是复制指针、修改指针和整数，正常情况下不会抛出异常。给移动构造和移动赋值加上 noexcept 也能让标准库更放心地使用移动操作。
     DynFibonacci &operator=(DynFibonacci &&other) noexcept {
     // 防止 fib0 = std::move(fib0)
+    // &other是取得 other 的地址
     if (this != &other) {
         // 先释放自己原来的缓存
         delete[] cache;
@@ -64,13 +67,13 @@ public:
 
     // NOTICE: 不要修改这个方法
     size_t operator[](int i) const {
-        ASSERT(i <= cached, "i out of range");
+        ASSERT(i <= cached, "i out of range");  // 因此这个版本不能继续计算，只能读取已经缓存的结果，所以它先检查是否有缓存。
         return cache[i];
     }
 
     // NOTICE: 不要修改这个方法
     bool is_alive() const {
-        return cache;
+        return cache;  //cache 是一个指针。指针用作布尔值时：cache != nullptr  → true；cache == nullptr  → false
     }
 };
 
@@ -78,7 +81,7 @@ int main(int argc, char **argv) {
     DynFibonacci fib(12);
     ASSERT(fib[10] == 55, "fibonacci(10) should be 55");
 
-    DynFibonacci const fib_ = std::move(fib);
+    DynFibonacci const fib_ = std::move(fib);  // 这里的 fib_ 是 const 对象。编译器会认为它不允许被修改，所以只能调用末尾带 const 的成员函数
     ASSERT(!fib.is_alive(), "Object moved");
     ASSERT(fib_[10] == 55, "fibonacci(10) should be 55");
 
@@ -86,7 +89,7 @@ int main(int argc, char **argv) {
     DynFibonacci fib1(12);
 
     fib0 = std::move(fib1);
-    fib0 = std::move(fib0);
+    fib0 = std::move(fib0);  //自己移动到自己会导致数据丢失
     ASSERT(fib0[10] == 55, "fibonacci(10) should be 55");
 
     return 0;

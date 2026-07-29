@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
 
     // TODO: 补全三个类型的大小
     // static_assert 是《编译期》断言。如果条件不成立，程序编译失败
+    // 注意：这里的 4 假设当前平台的 int 占 4 字节，一般电脑上确实如此，但并不是所有平台都保证如此。
     static_assert(sizeof(X) == 4, "There is an int in X");   // sizeof(X) 表示 X 对象占用的字节数
     static_assert(sizeof(A) == 4, "There is an int in A");
     static_assert(sizeof(B) == 8, "B is an A with an X");

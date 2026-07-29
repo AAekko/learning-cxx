@@ -2,17 +2,19 @@
 
 // READ: 派生类 <https://zh.cppreference.com/w/cpp/language/derived_class>
 
-static int i = 0;
+static int i = 0;  // 全局计数器,static 表示这个变量只在当前源文件中可见;static 表示该变量具有静态存储期，程序运行期间一直存在。
 
 struct X {
     int x;
-
+    // Step 1：X 的构造函数
     X(int x_) : x(x_) {
-        std::cout << ++i << ". " << "X(" << x << ')' << std::endl;
+        std::cout << ++i << ". " << "X(" << x << ')' << std::endl;  // ++i 会先让 i 加 1，再输出当前编号
     }
+    // Step 2：X 的拷贝构造函数
     X(X const &other) : x(other.x) {
         std::cout << ++i << ". " << "X(X const &) : x(" << x << ')' << std::endl;
     }
+    // Step 3：X 的析构函数
     ~X() {
         std::cout << ++i << ". " << "~X(" << x << ')' << std::endl;
     }
@@ -24,13 +26,13 @@ struct A {
         std::cout << ++i << ". " << "A(" << a << ')' << std::endl;
     }
     A(A const &other) : a(other.a) {
-        std::cout << ++i << ". " << "A(A const &) : a(" << a << ')' << std::endl;
+        std::cout << ++i << ". " << "A(A const &) : a(" << a << ')' << std::endl;  
     }
     ~A() {
         std::cout << ++i << ". " << "~A(" << a << ')' << std::endl;
     }
 };
-struct B : public A {
+struct B : public A {                                         // 表示 B 公有继承自 A
     X x;
 
     B(int b) : A(1), x(b) {
@@ -45,12 +47,13 @@ struct B : public A {
 };
 
 int main(int argc, char **argv) {
-    X x = X(1);
+    X x = X(1);  // 创建一个名为 x、类型为 X 的对象，并用整数 1 初始化它
     A a = A(2);
     B b = B(3);
 
     // TODO: 补全三个类型的大小
-    static_assert(sizeof(X) == 4, "There is an int in X");
+    // static_assert 是《编译期》断言。如果条件不成立，程序编译失败
+    static_assert(sizeof(X) == 4, "There is an int in X");   // sizeof(X) 表示 X 对象占用的字节数
     static_assert(sizeof(A) == 4, "There is an int in A");
     static_assert(sizeof(B) == 8, "B is an A with an X");
 

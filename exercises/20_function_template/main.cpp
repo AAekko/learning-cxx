@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     ASSERT(plus(1.25, 2.5) == 3.75, "Plus two double");    // 为什么 1.25 + 2.5 == 3.75 可以直接比较？因为这些数字都可以写成二进制能够精确表示的分数：1.25 = 1 + 1/4，2.5  = 2 + 1/2，3.75 = 3 + 3/4。其中 1/2、1/4 都能用二进制精确表示，所以这些数的加法通常可以直接用 == 判断。（2的整数次方）
     // TODO: 修改判断条件使测试通过
     // 0.1、0.2 无法用二进制浮点数精确表示，应判断误差
-    ASSERT(std::abs(plus(0.1, 0.2) - 0.3) < 1e-12, "How to make this pass?");
+    ASSERT(std::abs(plus(0.1, 0.2) - 0.3) < 1e-12, "How to make this pass?");  // std::abs是标准库中的绝对值函数
 
     return 0;
 }

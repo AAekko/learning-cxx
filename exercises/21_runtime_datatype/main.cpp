@@ -1,7 +1,7 @@
 ﻿#include "../exercise.h"
 #include <cmath>
 
-enum class DataType {
+enum class DataType {                 // 它只有两个可能的值：DataType::Float 和 DataType::Double
     Float,
     Double,
 };
@@ -11,20 +11,31 @@ enum class DataType {
 struct TaggedUnion {
     DataType type;
     // NOTICE: struct/union 可以相互任意嵌套。
-    union {
+    union {                            // union 叫作联合体，普通结构体中的成员分别占用不同的内存，但联合体的所有成员共用同一块内存
+                                       // union 自己不会记录当前保存了什么类型，所以需要额外使用 type 作为标签
         float f;
         double d;
     };
 };
 
 // TODO: 将这个函数模板化用于 sigmoid_dyn
-float sigmoid(float x) {
+template <typename T>
+T sigmoid(T x) {
     return 1 / (1 + std::exp(-x));
 }
 
 TaggedUnion sigmoid_dyn(TaggedUnion x) {
     TaggedUnion ans{x.type};
     // TODO: 根据 type 调用 sigmoid
+    switch (x.type) {
+    case DataType::Float:
+        ans.f = sigmoid(x.f);           // x.f 是 float，编译器会生成类似下面的函数：float sigmoid(float x)
+        break;
+    case DataType::Double:
+        ans.d = sigmoid(x.d);           // x.d 是 double，编译器会生成：double sigmoid(double x)
+        break;
+    }
+    
     return ans;
 }
 

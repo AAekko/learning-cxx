@@ -11,7 +11,7 @@ struct FibonacciCache { // 这里定义了一种名为 FibonacciCache 的类型�
 // static 出现在不同位置时含义会有所区别
 static unsigned long long fibonacci(FibonacciCache &cache, int i) {           // & 表示 cache 是传入对象的别名，而不是复制一份新对象。&cache就是形参，但是加了&又叫引用形参。
     for (; cache.cached <= i; ++cache.cached) {
-        cache.cache[cached.cache] = cache.cache[cached.cache - 1] + cache[cached.cache - 2];
+        cache.cache[cache.cached] = cache.cache[cache.cached - 1] + cache[cache.cached - 2];
     }
     return cache.cache[i];
 }
